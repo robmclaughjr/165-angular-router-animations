@@ -1,0 +1,76 @@
+<section class="mastermind-shell">
+  <header class="deco-header">
+    <div class="title-block">
+      <p class="eyebrow">Art Deco Puzzle Salon</p>
+      <h1>Mastermind</h1>
+      <p class="lede">Craft a 4-color code using the jewel-toned palette. Perfect matches earn dark markers; misplaced colors earn light markers.</p>
+    </div>
+    <div class="badge">Max {{ maxAttempts }} tries</div>
+  </header>
+
+  <section class="panel">
+    <div class="control-column">
+      <h2>Palette</h2>
+      <p class="hint">Tap a color, then paint a slot in your guess.</p>
+      <div class="swatches">
+        <button
+          *ngFor="let swatch of colors"
+          class="swatch"
+          [class.active]="swatch.name === activeColor"
+          [style.background]="swatch.value"
+          (click)="selectColor(swatch.name)"
+        >
+          <span>{{ swatch.name }}</span>
+        </button>
+      </div>
+      <div class="legend">
+        <div class="pill in-place"></div><span>Correct color &amp; position</span>
+        <div class="pill misplaced"></div><span>Correct color, wrong position</span>
+      </div>
+    </div>
+
+    <div class="board-column">
+      <div class="guess-card">
+        <div class="card-head">
+          <h2>Your Guess</h2>
+          <div class="actions">
+            <button class="ghost" (click)="resetGuess()" [disabled]="gameOver">Clear</button>
+            <button class="primary" (click)="submitGuess()" [disabled]="gameOver">Submit</button>
+          </div>
+        </div>
+        <div class="slots" [class.inactive]="gameOver">
+          <button
+            class="slot"
+            *ngFor="let slot of currentGuess; let i = index"
+            (click)="paintSlot(i)"
+            [style.background]="slot ? colors.find(c => c.name === slot)?.value : 'transparent'"
+          >
+            <span>{{ slot || 'Tap to paint' }}</span>
+            <span class="eraser" (click)="$event.stopPropagation(); clearSlot(i)">✕</span>
+          </button>
+        </div>
+        <p class="status" [class.complete]="gameOver">{{ statusMessage }}</p>
+        <button class="reset" (click)="resetGame()">Start a new code</button>
+      </div>
+
+      <div class="history">
+        <div class="history-head">
+          <h2>Guess Log</h2>
+          <span class="small">Latest on top</span>
+        </div>
+        <div *ngIf="!guessHistory.length" class="empty">No guesses yet — create a sequence to begin.</div>
+        <div *ngFor="let result of guessHistory" class="history-row">
+          <div class="attempt">Attempt {{ result.attempt }}</div>
+          <div class="pegs">
+            <span *ngFor="let color of result.guess" class="peg" [style.background]="colors.find(c => c.name === color)?.value"></span>
+          </div>
+          <div class="feedback">
+            <div class="marker in-place">{{ result.exact }}</div>
+            <div class="marker misplaced">{{ result.partial }}</div>
+            <span class="message">{{ result.message }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

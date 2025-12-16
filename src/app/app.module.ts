@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { RightPageComponent } from './right-page/right-page.component';
 import { LeftPageComponent } from './left-page/left-page.component';
 import { AboutPageComponent } from './about-page/about-page.component';
+import { MastermindComponent } from './mastermind/mastermind.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -15,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RightPageComponent,
     LeftPageComponent,
     AboutPageComponent,
+    MastermindComponent,
   ],
   imports: [
     BrowserModule,
